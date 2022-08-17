@@ -155,15 +155,27 @@ Kubernetes Engine is the focus of this specialization. You will learn more about
 ### 실습: Google Cloud Console 및 Cloud Shell에 액세스하기
 
 
-### 요약
+### 요약: 동영상
 
-### Google Cloud 소개
+### Google Cloud 소개: Test
 
 ## 컨테이너 및 Kubernetes 소개
 
 ### 모듈 소개
 
+ 소프트웨어 컨테이너와 애플리케이션 배포 측면의 이점을 알아봅니다. 컨테이너를 구성하고 빌드하며, Kubernetes 등의 관리 솔루션에서 제공하는 함수 컨테이너에 대해서도 학습합니다. 자체 컨테이너 관리 인프라를 구축할 경우와 비교하여 Google Kubernetes Engine의 이점을 살펴봅니다.
+
 ### 컨테이너 및 컨테이너 이미지
+
+우리는 기존에 각각의 서버에 application을 build하여 사용했다. 
+> Dedicated server: Hardware > Kernel > Dependencies > Application code
+
+Hypervisor: 가상 머신의 생성 및 관리
+> Virtual machine: Hardware + Hypervisor > Kernel > Dependencies > Application code
+
+
+
+
 
 ### 실습: Cloud Build로 작업하기
 
