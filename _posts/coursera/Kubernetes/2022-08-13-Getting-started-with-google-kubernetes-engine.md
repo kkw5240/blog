@@ -150,7 +150,7 @@ GKE에서 실행되는 App에서 받는 호출의 비율이 아닌 GKE cluster �
 | App Engine | Application을 배포하기위한 관리 된 Serverless platform |
 | Cloud Funtions | Event-driven Function을 배포하기위한 관리되는 Serverless platform |
 
-Kubernetes Engine is the focus of this specialization. You will learn more about all of these choices in a later module.
+Kubernetes 엔진은이 전문화의 초점입니다.이후 모듈에서 이러한 모든 선택에 대해 자세히 알아볼 수 있습니다.
 
 ### 실습: Google Cloud Console 및 Cloud Shell에 액세스하기
 
