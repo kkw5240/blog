@@ -54,3 +54,6 @@ plugins:
   - jemoji
 
 theme: jekyll-theme-midnight
+
+tracker: 
+  google_analytics: G-C43JBDVEB9
