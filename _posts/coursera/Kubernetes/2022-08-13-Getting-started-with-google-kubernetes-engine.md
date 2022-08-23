@@ -153,9 +153,26 @@ GKE에서 실행되는 App에서 받는 호출의 비율이 아닌 GKE cluster �
 Kubernetes 엔진은이 전문화의 초점입니다.이후 모듈에서 이러한 모든 선택에 대해 자세히 알아볼 수 있습니다.
 
 ### 실습: Google Cloud Console 및 Cloud Shell에 액세스하기
-
+[Accessing the Google Cloud Console and Cloud Shell](https://github.com/kkw5240/blog/blob/master/_posts/coursera/Kubernetes/Accessing%20the%20Google%20Cloud%20Console%20and%20Cloud%20Shell.md)
 
 ### 요약: 동영상
+
+- Google Cloud platform
+  - 사용자의 IT 사용을 구성하는 방식
+  - 공급업체가 자체적으로 유지보수하는 풀의 리소스에 대한 주문형 액세스를 네트워크를 통해 제공
+  - 비용은 사용하거나 예약한 만큼만 지불
+  - 인프라는 제공업체에서 유지보수하며 사용을 마친 후 종료하면 됨 
+  - Google Cloud Platform은 다양한 클라우드 컴퓨팅 서비스를 제공
+  - Google 하드웨어에서 사용자 코드를 실행하는 네 가지 서비스도 포함 
+
+- Kubernetes Engine
+  - GCP가 제공하는 모든 리소스는 리전과 영역으로 구성 
+  - 단일 리전에서 여러 영역에 걸쳐 리소스를 사용하면 애플리케이션의 복원력을 향상할 수 있음 
+  - GCP는 공유 보안 모델을 사용
+  - 사용자는 GCP 리소스에 대한 보안 정책을 정의할 책임이 있으며 클라우드 리소스 관리 계층 구조를 통해 정책을 쉽게 관리할 수 있음
+  - GCP 리소스 사용을 관리할 때 중요한 두 가지 도구 
+    - GCP Console 
+    - Cloud Shell 
 
 ### Google Cloud 소개: Test
 
@@ -167,13 +184,71 @@ Kubernetes 엔진은이 전문화의 초점입니다.이후 모듈에서 이러�
 
 ### 컨테이너 및 컨테이너 이미지
 
-우리는 기존에 각각의 서버에 application을 build하여 사용했다. 
+#### Dedicated server
+
+기존에는 각각의 서버에 application을 build하여 사용 
 > Dedicated server: Hardware > Kernel > Dependencies > Application code
+- Deployment ~months 
+- Low utilization 
+- Not portable
 
-Hypervisor: 가상 머신의 생성 및 관리
+#### Hypervisor: 가상 머신의 생성 및 관리
+
 > Virtual machine: Hardware + Hypervisor > Kernel > Dependencies > Application code
+- Deployment ~days (mins)
+- Improved utilization
+- Hypervisor-specific
 
+#### Single VM & multiple apps
 
+> Virtual machine: Hardware + Hypervisor > Kernel > Dependencies > App1 & App2 
+- Deployment ~days (mins)
+- Improved utilization
+- Low isolation; tied to OS
+
+##### VM을 중심으로 문제 해결
+
+| Virtual machine 1 || Virtual machine 2 |
+|:---:|:---:|:---:|
+| Application Code || Application Code |
+| Dependencies || Dependencies |
+| Kernel || Kernel |
+|| Hardware + Hypervisor ||
+
+#### 사용자 공간 추상화 및 컨테이너
+||| Virtual machine ||
+|:---:|:---:|:---:|:---:|
+| User Space | Application || Application |
+| ^ | Dependencies || Dependencies |
+||| Container Runtime ||
+||| Kernel ||
+||||
+||| Hardware + Hypervisor ||
+
+- Deployment ~days (mins)
+- Hypervisor-specific
+- Redundant OS 
+
+#### Container
+가볍고 독립적이며 리소스 효율이 높고 이동성이 우수한 실행 패키지
+
+| Container |
+|:---:|
+Application code
+Dependencies
+
+##### 컨테이너는 다양한 Linux 기술 세트를 사용한다. 
+
+- Processes
+  - Process마다 분리된 고유의 가상 메모리 주소 공간을 사용 
+  - 빠르게 생성 및 삭제 가능
+- Linux namespaces
+  - PID, Directory Tree, IP 주소 등을 제어 
+  - Kubernetes namespace와는 다름
+- cgroups 
+  - Application이 사용할 수 있는 CPU 시간, Memory, I/O 대역폭, 기타 리소스의 최대 사용량을 제어 
+- Union file systems
+  - Application과 dependencies를 최소 layer로 효율적으로 캡슐화
 
 
 
