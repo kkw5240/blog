@@ -153,7 +153,7 @@ GKE에서 실행되는 App에서 받는 호출의 비율이 아닌 GKE cluster �
 Kubernetes 엔진은이 전문화의 초점입니다.이후 모듈에서 이러한 모든 선택에 대해 자세히 알아볼 수 있습니다.
 
 ### 실습: Google Cloud Console 및 Cloud Shell에 액세스하기
-[Accessing the Google Cloud Console and Cloud Shell](https://github.com/kkw5240/blog/blob/master/_posts/coursera/Kubernetes/Accessing%20the%20Google%20Cloud%20Console%20and%20Cloud%20Shell.md)
+[Accessing the Google Cloud Console and Cloud Shell](https://github.com/kkw5240/blog/blob/master/_posts/coursera/Kubernetes/practice/Accessing%20the%20Google%20Cloud%20Console%20and%20Cloud%20Shell.md)
 
 ### 요약: 동영상
 
@@ -250,15 +250,70 @@ Dependencies
 - Union file systems
   - Application과 dependencies를 최소 layer로 효율적으로 캡슐화
 
-
-
 ### 실습: Cloud Build로 작업하기
 
+[Working with Cloud Build](https://github.com/kkw5240/blog/blob/master/_posts/coursera/Kubernetes/practice/Working%20with%20Cloud%20Build.md)
+
 ### Kubernetes 소개
+#### Kubernetes 정의 
+
+- Open Source
+  - Google에서 최초 개발
+  - 오픈소스 커뮤니티에 제공 (Cloud Native Computing Foundation)
+- Automation
+  - Container화된 application의 배포, 확장, 부하분산, 로깅, 모니터일ㅇ 등 기타 관리 기능을 자동화 (PaaS Solution의 특징을 지님)
+- Container management
+  - 다양한 사용자 환경설정과 구성 유연성을 지원 (IaaS 기능도 지원)
+- Declarative configuration (선언적 구성)
+  - 인프라를 선언적으로 관리하는 경우 일련의 명령어를 실행하는 게 아니라 달성하려는 상태를 설명하여 원하는 상태를 달성함
+  - 배포된 시스템을 원하는 상태로 만들고 장애가 발생해도 상태를 유지
+  - 작업 부담을 덜어줌
+- Imperactive configuration (명령형 구성)
+  - Kubernetes는 명령형으로 관리 가능하나 그런 방법은 kubernetes의 선언한 시스템 상태를 자동으로 유지하는 장점을 활용하지 못한 방법임
+  - 숙련된 kubernetes 관리자는 명령형 구성을 간편한 임시 수정용이나 선언적 구성을 빌드하는 도구로만 사용함 
+
+#### Kubernetes 기능 
+
+- 다양한 워크로드 유형을 지원함. 
+  - Stateless application(Nginx, Apache 웹 서버) 지원
+  - Stateful application(사용자 및 세션 데이터를 영구 저장) 지원
+  - 일괄 작업 및 데몬 태스크 지원
+- Autoscaling
+  - Resource 사용률에 따라 container화된 application을 자동으로 수평 확장 및 축소 가능
+- Resource limits
+  - 워크로드의 리소스 요청 수준과 리소스 한도를 지정 가능
+  - 리소스를 제어하여 클러스터 내의 전반적인 워크로드 성능을 개선
+- Extensibility
+  - 플러그인, 부가 기능 확장 가능
+- Portability
+  - Kubernetes는 오픈소스이므로 on-premise 또는 GCP를 비롯한 여러 cloud service 제공업체 간 워크로드 이동성도 지원함
+  - Kubernetes를 어디든 배포할 수 있으며 공급업체의 제약 없이 워크로드를 자유롭게 이동 가능
+
 
 ### Google Kubernetes Engine 소개
 
+#### GKE(Google Kubernetes Engine)의 장점
+
+GKE를 통해 GCP에서 container화된 application을 위해 kubernetes 환경을 배포, 관리, 확장 가능
+
+GKE는 GCP 컴퓨팅 기능의 구성요소이며 이를 통해 kubernetes 워크로드를 cloud에 손쉽게 배포 가능
+
+#### GKE의 기능
+
+- Fully managed
+- Container-optimized OS
+- Auto upgrade
+- Auto repair
+- Cluster scaling
+- Seamless integration
+- Identity and access management
+- Integrated logging and monitoring
+- Integrated networking
+- Cloud Console
+
 ### 컴퓨팅 옵션 세부정보
+
+
 
 ### 요약
 
