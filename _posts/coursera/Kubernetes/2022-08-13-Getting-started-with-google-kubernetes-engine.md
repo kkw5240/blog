@@ -219,10 +219,10 @@ Kubernetes 엔진은이 전문화의 초점입니다.이후 모듈에서 이러�
 ||| Virtual machine ||
 |:---:|:---:|:---:|:---:|
 | User Space | Application || Application |
-| ^ | Dependencies || Dependencies |
+|| Dependencies || Dependencies |
 ||| Container Runtime ||
 ||| Kernel ||
-||||
+|||||
 ||| Hardware + Hypervisor ||
 
 - Deployment ~days (mins)
@@ -234,8 +234,8 @@ Kubernetes 엔진은이 전문화의 초점입니다.이후 모듈에서 이러�
 
 | Container |
 |:---:|
-Application code
-Dependencies
+|Application code|
+|Dependencies|
 
 ##### 컨테이너는 다양한 Linux 기술 세트를 사용한다. 
 
