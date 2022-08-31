@@ -216,7 +216,8 @@ Kubernetes 엔진은이 전문화의 초점입니다.이후 모듈에서 이러�
 || Hardware + Hypervisor ||
 
 #### 사용자 공간 추상화 및 컨테이너
-||| Virtual machine ||
+
+| | | Virtual machine | |
 |:---:|:---:|:---:|:---:|
 | User Space | Application || Application |
 || Dependencies || Dependencies |
@@ -313,9 +314,101 @@ GKE는 GCP 컴퓨팅 기능의 구성요소이며 이를 통해 kubernetes 워�
 
 ### 컴퓨팅 옵션 세부정보
 
+#### Compute Engine
+
+- 완전히 사용자 정의 가능한 가상 머신
+- 영구 디스크 및 선택적 로컬 SSD
+- 글로벌 로드 밸런싱 및 자동화
+- 초당 비용 청구
+
+##### 사람들이 Compute Engine을 선택하는 이유
+
+- OS 및 가상 하드웨어를 완전히 제어
+- Cloud로의 lift-and-shift migration에 적합
+- 관리되는 solution이 너무 제한적 일 때 종종 사용되는 가장 유연한 computing solution
+
+#### App Engine 
+
+- 완전히 관리되는 code 우선 platform을 제공
+- Application 배포 및 확장성을 간소화
+- 인기있는 programing 언어 및 application runtimes를 지원합니다.
+- 통합 모니터링, logging 및 진단을 지원합니다
+- version 제어 canary test 및 rollback을 단순화합니다
+
+##### App Engine의 사용 사례
+
+- Websites
+- Mobile app과 gaming backends
+- RESTful APIs
+
+#### Google Kubernetes Engine
+
+- 완전히 관리되는 Kubernetes platform
+- Cluster scaling, 영구 disk, 자동 upgrate 및 자동 node 수리 지원
+- Google Cloud 서비스와 내장 된 통합
+- 여러 환경에 걸친 휴대성
+  - Hybrid computing
+  - Multi-cloud computing
+
+##### GKE의 사용 사례
+
+- Container화 된 applications
+- Cloud-native 분산 systems
+- Hybrid applications
+
+#### Cloud Run
+
+- Stateless한 Container를 활성화 가능
+- Infrastructure 관리를 추상화 가능
+- 자동으로 Scale up/down 가능
+- Open API와 runtime 환경을 사용 가능 
+
+##### Cloud Run의 사용 사례
+
+- 요청 또는 이벤트를 listening하는 상태의 container 배포
+- 모든 frameworks 및 도구를 사용하여 모든 언어로 applications 구축
+
+#### Cloud Funtions 
+
+- Event 중심의 Serverless compute service
+- 고도로 사용 가능한 결함 내성 design으로 자동 scaling
+- 요금 부과는 코드가 실행될 때만 적용
+- Google Cloud Services, HTTP end-point 및 Firebase의 event를 기반으로 trigger 가능
+
+##### Cloud Funtions의 사용 사례
+
+- Microservice architecture 지원
+- Serveless application backends 
+  - Mobile 및 IoT backends
+  - 타사 service 및 API와의 통합
+- 지능형 applications
+  - 가상 assistant 및 chat bots
+  - Video 및 image 분석
+
+#### Computing Options를 결정하는 요소
+
+- Compute Engine
+  - 각 VM이 관리되고 유지되는 수명이 긴 가상 머신에서 application을 실행하는 경우 
+  - 물리적 서버 하드웨어에서 application을 실행하는 경우 
+  - VM당 하나의 container
+- GKE
+  - container workload의 풍부한 관리
+  - On-premises Kubernetes
+- App Engine
+  - No-ops(작업에 대해 전혀 생각하고 싶지 않은 경우)
+  - Service가 운영하는 container
+- Cloud Run
+  - Managed 
+  - Stateless container
+- Cloud Funtions
+  - No-ops(작업에 대해 전혀 생각하고 싶지 않은 경우)
 
 
 ### 요약
+
+- Cloud Build를 사용하여 Container를 만드는 방법
+- Container를 Container Registry에 보관하는 방법
+- Kubernetes 및 Google Kubernetes Engine의 기능 비교 및 대조
 
 ### 퀴즈: 컨테이너 및 컨테이너 이미지
 
@@ -323,7 +416,50 @@ GKE는 GCP 컴퓨팅 기능의 구성요소이며 이를 통해 kubernetes 워�
 
 ### 모듈 소개
 
+- Kubernetes 객체와 Kubernetes contol plane에 대한 이해 
+- Google Kubernetes Engine(GKE)를 이용한 Kubernetes cluster의 배포
+- Pods를 GKE cluster에 배포
+- Kubernetes 객체 view와 관리 
+
 ### Kubernetes 개념
+
+- Kubernetes 객체 모델
+  - Kubernetes가 관리하는 각 항목은 객체로 표시
+  - Kubernetes 객체의 속성과 상태를 확인하고 변경 가능 
+- 선언적 관리 원칙 
+  - 관리되고 있는 객체에 대하여 원하는 상태를 지정
+  - Kubernetes는 객체를 사용자가 지정 한 상태로 전환하여 유지 (감시 loop)
+
+#### Kubernetes 객체의 두 가지 요소
+
+- Kubernetes 객체: Cluster의 상태를 나타내는 영구 entities
+  - 객체 사양: 우리가 서술한 원하는 상태
+  - 객체 상태: Kubernetes에 의해 서술 된 현재 상태
+
+#### Pod 공유 resourece의 container
+
+- Pod
+  - Module의 기본 구성 요소 
+  - 배포 가능한 가장 작은 Kubernetes 객체 
+  - Kubernetes system에서 실행 중인 모든 container
+  - Pod는 container가 위치한 환경을 구현하며 해당 환경은 하나 이상의 container를 수용 할 수 있음
+
+||Pod||
+|:---:|:---:|:---:|
+||Shared networking||
+|Container|Container|Container|
+||Shared storage||
+
+#### 3개의 nginx container를 기동하는 방법
+1. 당신은 항상 3 개의 nginx 컨테이너를 실행하고 싶습니다.
+2. 해당 컨테이너를 나타내는 객체를 선언합니다
+3. Kubernetes는 해당 객체를 시작하여 유지합니다
+
+#### 현재 상태와 원하는 상태를 비교
+1. 원하는 상태 정의 (Kubernetes objects)
+2. 현재 상태 비교 
+3. Kubernetes Control Plane: 치료 조치
+4. 1부터 다시 반복
 
 ### Kubernetes 제어 영역
 
