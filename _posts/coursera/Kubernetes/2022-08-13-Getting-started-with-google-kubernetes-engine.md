@@ -463,6 +463,42 @@ GKE는 GCP 컴퓨팅 기능의 구성요소이며 이를 통해 kubernetes 워�
 
 ### Kubernetes 제어 영역
 
+#### Kubernetes Cluster를 작동시키는 협력 프로세스의 모음
+
+![CooperatingProcessesMakeKubernetesClusterWork](./image/CooperatingProcessesMakeKubernetesClusterWork.png)
+- Cluster
+- Control plane(컴퓨터, Node - GKE VM || PC || ETC)
+  - Node의 역할: Pod의 실행
+  - Control plane의 역할: 전체 Cluster의 조정
+- Kube-API server: 사용자가 직접 상호작용하느 단일 구성요소
+  - Cluster의 상태르 보거나 변경하는 명령어를 받음(Pods의 실행 포함)
+- Kubectl: kube-API server에 연결 및 Kubernetes API를 사용한 통신
+  - kubectl만 kube-API server와 통신하는 것은 아님
+- Etcd: Cluster의 상태를 안정적으로 저장하는 database
+  - 모든 cluster의 구성 data와 많은 동적 정보(cluster의 일부인 node, 실행해야하는 pod, 실행 위치)
+  - 사용자는 ectd와 직접 상호작용 하지 않음
+- Kube-scheduler: pod르 예약하는 역할
+  - 각 개별 pod의 요구사항을 평가하고 가장 적합한 node를 선택 
+  - 실제로 node에서 pods를 실행하는 역할은 하지 않음
+  - 정의한 제약조건에 따라 pods의 실행 위치를 결정
+    - 모든 node의 상태를 파악
+    - HW, SW, 정책을 기반
+    - 어피니티 사양을 정의하여 pod group이 동일한 node에서 실행되거나 실행되지 않도록 지정 가능
+- Kube-controller-manager
+  - kube-APIserver를 통해 cluster의 상태를 지속적으로 모니터링
+  - cluster의 현재 상태가 원하는 상태와 일치하지 않을 때마다 원하는 상태를 달성하기 위해 변경을 시도 
+  - 많은 Kubernetes 객체가 controller라는 code loop에 의해 관리 됨
+  - Code loop는 해결 Process를 처리함
+- Kube-cloud-manager: 기본 cloud 제공업체와 상호작용하는 controller를 관리
+  - 필요할 때 부하 분산기 및 스토리지 볼륨과 같은 cloud의 기능을 가져오는 역할을 함
+- Kubelet: 각 node에 있는 kubernetes의 agent
+  - Container runtime을 사용하여 pod를 시작 
+  - 준비 프로브 및 활성 프로브를 포함한 수명 주기를 모니터링
+  - Kube-APIserver에 보고 
+- Container runtime: container image에서 container를 시작하는 방법을 아는 소프트웨어
+- Kube-proxy: cluster에서 pod 간 network 연결을 유지
+  - Open source Kubernetes에서는 iptables의 방화벽 기능을 사용(Linux kernel 내장)
+
 ### Google Kubernetes Engine 개념
 
 ### Kubernetes 객체 관리
@@ -471,11 +507,76 @@ GKE는 GCP 컴퓨팅 기능의 구성요소이며 이를 통해 kubernetes 워�
 
 #### 배포 및 ReplicaSet 참고사항
 
+##### A note about Deployments and ReplicaSets
+
+이전 강의에서 본 Nginx 배포 예제는 단순화되어있습니다.
+실제로, 강의에서 설명한 것처럼 원하는 3 개의 Nginx pod를 관리하기 위해 배포 객체를 시작합니다.
+그러나 배포 객체는 pod를 관리하기 위해 ReplicaSet 객체를 생성합니다.
+강의의 diagram은 이 세부 사항을 제거했습니다.
+
+당신은 ReplicaSet 객체보다 배포 객체와 함께 훨씬 더 자주 작업하게 될겁니다. 
+그러나 ReplicaSets에 대해 아는 것은 여전히 배포 작업의 방법을 좀 더 잘 이해할 수 있도록 하기 때문에 도움이 됩니다. 
+예를 들어, 배포의 한 가지 기능은 관리하는 pod의 rolling upgrade를 허용하는 것입니다.
+upgrade를 수행하기 위해 배포 객체는 두 번째 ReplicaSet 객체를 생성 한 다음 두 번째 복제품에서 (upgrade 된) pod 수를 늘리고 첫 번째 복제품의 숫자를 줄입니다.
+
 #### Kubernetes 객체 관리 연습 퀴즈
 
 #### 서비스 참고사항
 
+Services provide load-balanced access to specified Pods. There are three primary types of Services:
+- ClusterIP: Exposes the service on an IP address that is only accessible from within this cluster. This is the default type.
+- NodePort: Exposes the service on the IP address of each node in the cluster, at a specific port number.
+- LoadBalancer: Exposes the service externally, using a load balancing service provided by a cloud provider.
+
+In Google Kubernetes Engine, LoadBalancers give you access to a regional Network Load
+Balancing configuration by default. To get access to a global HTTP(S) Load Balancing
+configuration, you can use an Ingress object.
+
+You will learn more about Services and Ingress objects in a later module in this specialization.
+
 #### 알아야 할 컨트롤러 객체
+
+This reading explains the relationship among several Kubernetes controller objects:
+- ReplicaSets
+- Deployments
+- Replication Controllers
+- StatefulSets
+- DaemonSets
+- Jobs
+
+A ReplicaSet controller ensures that a population of Pods, all identical to one another, are
+running at the same time. Deployments let you do declarative updates to ReplicaSets and Pods.
+In fact, Deployments manage their own ReplicaSets to achieve the declarative goals you
+prescribe, so you will most commonly work with Deployment objects.
+
+Deployments let you create, update, roll back, and scale Pods, using ReplicaSets as needed to
+do so. For example, when you perform a rolling upgrade of a Deployment, the Deployment object
+creates a second ReplicaSet, and then increases the number of Pods in the new ReplicaSet as it
+decreases the number of Pods in its original ReplicaSet.
+
+Replication Controllers perform a similar role to the combination of ReplicaSets and
+Deployments, but their use is no longer recommended. Because Deployments provide a helpful
+"front end" to ReplicaSets, this training course chiefly focuses on Deployments.
+
+If you need to deploy applications that maintain local state, StatefulSet is a better option. A
+StatefulSet is similar to a Deployment in that the Pods use the same container spec. The Pods
+created through Deployment are not given persistent identities, however; by contrast, Pods
+created using StatefulSet have unique persistent identities with stable network identity and
+persistent disk storage.
+
+If you need to run certain Pods on all the nodes within the cluster or on a selection of nodes, use
+DaemonSet. DaemonSet ensures that a specific Pod is always running on all or some subset of
+the nodes. If new nodes are added, DaemonSet will automatically set up Pods in those nodes
+with the required specification. The word "daemon" is a computer science term meaning a
+non-interactive process that provides useful services to other processes. A Kubernetes cluster
+might use a DaemonSet to ensure that a logging agent like fluentd is running on all nodes in the
+cluster.
+
+The Job controller creates one or more Pods required to run a task. When the task is completed,
+Job will then terminate all those Pods. A related controller is CronJob, which runs Pods on a
+time-based schedule.
+
+Later modules in this specialization will cover these controllers in more depth.
 
 #### Kubernetes 컨트롤러 객체 연습 퀴즈
 
